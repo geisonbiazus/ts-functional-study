@@ -4,12 +4,12 @@ describe("integers", () => {
   it("returns an iterator that always returns the next integer", () => {
     const iterator = integers();
 
-    expect(iterator()).toEqual(1);
-    expect(iterator()).toEqual(2);
-    expect(iterator()).toEqual(3);
-    expect(iterator()).toEqual(4);
-    expect(iterator()).toEqual(5);
-    expect(iterator()).toEqual(6);
+    expect(iterator(0)).toEqual(1);
+    expect(iterator(1)).toEqual(2);
+    expect(iterator(2)).toEqual(3);
+    expect(iterator(3)).toEqual(4);
+    expect(iterator(4)).toEqual(5);
+    expect(iterator(5)).toEqual(6);
   });
 });
 
@@ -17,16 +17,16 @@ describe("squaresOf", () => {
   it("returns the square of the result of the given function", () => {
     const iterator = squaresOf(integers());
 
-    expect(iterator()).toEqual(1);
-    expect(iterator()).toEqual(4);
-    expect(iterator()).toEqual(9);
-    expect(iterator()).toEqual(16);
-    expect(iterator()).toEqual(25);
-    expect(iterator()).toEqual(36);
-    expect(iterator()).toEqual(49);
-    expect(iterator()).toEqual(64);
-    expect(iterator()).toEqual(81);
-    expect(iterator()).toEqual(100);
+    expect(iterator(0)).toEqual(1);
+    expect(iterator(1)).toEqual(4);
+    expect(iterator(2)).toEqual(9);
+    expect(iterator(3)).toEqual(16);
+    expect(iterator(4)).toEqual(25);
+    expect(iterator(5)).toEqual(36);
+    expect(iterator(6)).toEqual(49);
+    expect(iterator(7)).toEqual(64);
+    expect(iterator(8)).toEqual(81);
+    expect(iterator(9)).toEqual(100);
   });
 });
 

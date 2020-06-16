@@ -1,22 +1,18 @@
-export type Iterator = () => number;
+export type Iterator = (base: number) => number;
 
 export function integers(): Iterator {
-  let result = 0;
-  return () => ++result;
+  return (base) => base + 1;
 }
 
 export function squaresOf(iterator: Iterator): Iterator {
-  return () => {
-    const num = iterator();
+  return (base) => {
+    const num = iterator(base);
     return num * num;
   };
 }
 
 export function take(amount: number, iterator: Iterator): number[] {
-  const result: number[] = [];
+  const baseArray = new Array<number>(amount).fill(0);
 
-  for (let i = 0; i < amount; i++) {
-    result.push(iterator());
-  }
-  return result;
+  return baseArray.map((val: number, i: number) => iterator(i));
 }
