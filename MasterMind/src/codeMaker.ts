@@ -1,11 +1,15 @@
 import { Code } from "./codeBreaker";
 
-export enum Match {
-  POS = "pos",
+export interface Match {
+  pos: number;
 }
 
-export const score = (code: Code, guess: Code): Match[] => {
+export const score = (code: Code, guess: Code): Match => {
+  return { pos: positionMatches(code, guess) };
+};
+
+const positionMatches = (code: Code, guess: Code): number => {
   return code
-    .map((value, index) => (value == guess[index] ? Match.POS : null))
-    .filter((value) => value != null) as Match[];
+    .map((value, index) => value == guess[index])
+    .filter((value) => value).length;
 };
