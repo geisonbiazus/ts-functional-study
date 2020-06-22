@@ -1,4 +1,4 @@
-import { score, Match } from "./codeMaker";
+import { score } from "./codeMaker";
 
 describe("Code Maker", () => {
   it("Scores same position matches", () => {
@@ -21,5 +21,12 @@ describe("Code Maker", () => {
     expect(score([1, 2, 3, 4], [2, 0, 0, 0])).toEqual({ pos: 0, val: 1 });
     expect(score([1, 2, 3, 4], [2, 3, 0, 4])).toEqual({ pos: 1, val: 2 });
     expect(score([1, 2, 3, 4], [1, 2, 4, 3])).toEqual({ pos: 2, val: 2 });
+  });
+
+  it("does not over count duplicate guesses", () => {
+    expect(score([1, 2, 3, 4], [3, 3, 3, 4])).toEqual({ pos: 2, val: 0 });
+    expect(score([1, 2, 1, 2], [2, 1, 2, 1])).toEqual({ pos: 0, val: 4 });
+    expect(score([1, 1, 1, 2], [2, 1, 1, 1])).toEqual({ pos: 2, val: 2 });
+    expect(score([1, 1, 1, 2], [1, 1, 1, 1])).toEqual({ pos: 3, val: 0 });
   });
 });

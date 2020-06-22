@@ -8,16 +8,33 @@ export interface Match {
 export const score = (code: Code, guess: Code): Match => {
   const pos = positionMatches(code, guess);
   const val = valueMatches(code, guess);
-  return { pos, val: val - pos };
+  const over = overCount(code, guess);
+  return { pos, val: val - pos - over };
 };
 
 const positionMatches = (code: Code, guess: Code): number => {
-  return code
-    .map((value, index) => value == guess[index])
-    .filter((value) => value).length;
+  return countTrue(code.map((value, index) => value == guess[index]));
 };
 
 const valueMatches = (code: Code, guess: Code): number => {
-  return guess.map((value) => code.includes(value)).filter((value) => value)
-    .length;
+  return countTrue(guess.map((value) => code.includes(value)));
+};
+
+const countTrue = (list: boolean[]): number => {
+  return list.filter((value) => value).length;
+};
+
+const overCount = (code: Code, guess: Code): number => {
+  return unique(code)
+    .map((value) => countValue(guess, value) - countValue(code, value))
+    .filter((value) => value >= 0)
+    .reduce((sum, value) => sum + value, 0);
+};
+
+const unique = (list: number[]): number[] => {
+  return Array.from<number>(new Set<number>(list));
+};
+
+const countValue = (list: number[], value: number): number => {
+  return list.filter((v) => v === value).length;
 };
