@@ -1,4 +1,9 @@
-import { breakCode, codeToNumber, numberToCode } from "./codeBreaker";
+import {
+  breakCode,
+  codeToNumber,
+  numberToCode,
+  incrementCode,
+} from "./codeBreaker";
 
 describe("Code Breaker", () => {
   it("initial guess", () => {
@@ -37,5 +42,15 @@ describe("numberToCode", () => {
     expect(numberToCode(43)).toEqual([0, 1, 1, 1]);
     expect(numberToCode(259)).toEqual([1, 1, 1, 1]);
     expect(numberToCode(6 * 6 * 6 * 6 - 1)).toEqual([5, 5, 5, 5]);
+  });
+});
+
+describe("incrementCode", () => {
+  it("increments the code", () => {
+    expect(incrementCode([0, 0, 0, 0])).toEqual([0, 0, 0, 1]);
+    expect(incrementCode([0, 0, 0, 5])).toEqual([0, 0, 1, 0]);
+    expect(incrementCode([0, 0, 5, 5])).toEqual([0, 1, 0, 0]);
+    expect(incrementCode([0, 5, 5, 5])).toEqual([1, 0, 0, 0]);
+    expect(incrementCode([5, 5, 5, 5])).toEqual([0, 0, 0, 0]);
   });
 });

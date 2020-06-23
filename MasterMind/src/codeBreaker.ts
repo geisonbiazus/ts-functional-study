@@ -11,7 +11,7 @@ export const codeToNumber = (code: Code): number => {
 
 export const numberToCode = (number: number): Code => {
   return [
-    div(number, 6 * 6 * 6),
+    div(number, 6 * 6 * 6) % 6,
     div(number, 6 * 6) % 6,
     div(number, 6) % 6,
     number % 6,
@@ -20,4 +20,8 @@ export const numberToCode = (number: number): Code => {
 
 const div = (dividend: number, divisor: number): number => {
   return Math.floor(dividend / divisor);
+};
+
+export const incrementCode = (code: Code): Code => {
+  return numberToCode(codeToNumber(code) + 1);
 };
