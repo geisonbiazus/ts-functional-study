@@ -16,11 +16,18 @@ export const breakCode = (
 };
 
 const findNextGuess = (guess: Code, pastGuesses: ScoredGuess[]): Code => {
+  if (sameCode(guess, [0, 0, 0, 0]))
+    throw new Error("Error finding next guess");
+
   const guessScore = score(guess, pastGuesses[0].guess);
 
   if (sameScore(guessScore, pastGuesses[0].score)) return guess;
 
   return findNextGuess(incrementCode(guess), pastGuesses);
+};
+
+const sameCode = (code1: Code, code2: Code): boolean => {
+  return JSON.stringify(code1) === JSON.stringify(code2);
 };
 
 const sameScore = (score1: Match, score2: Match): boolean => {

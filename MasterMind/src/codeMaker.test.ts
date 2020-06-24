@@ -28,5 +28,6 @@ describe("Code Maker", () => {
     expect(score([1, 2, 1, 2], [2, 1, 2, 1])).toEqual({ pos: 0, val: 4 });
     expect(score([1, 1, 1, 2], [2, 1, 1, 1])).toEqual({ pos: 2, val: 2 });
     expect(score([1, 1, 1, 2], [1, 1, 1, 1])).toEqual({ pos: 3, val: 0 });
+    expect(score([0, 0, 1, 0], [0, 0, 0, 1])).toEqual({ pos: 2, val: 2 });
   });
 });

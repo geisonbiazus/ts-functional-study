@@ -28,6 +28,14 @@ describe("Code Breaker", () => {
     expect(breakCode([0, 0, 0, 0], pastGuesses)).toEqual([0, 0, 0, 1]);
   });
 
+  it("second step for code [0, 0, 1, 0]", () => {
+    const pastGuesses: ScoredGuess[] = [
+      { guess: [0, 0, 0, 1], score: { pos: 2, val: 2 } },
+    ];
+
+    expect(breakCode([0, 0, 0, 1], pastGuesses)).toEqual([0, 0, 1, 0]);
+  });
+
   describe("codeToNumber", () => {
     it("converts the guess into an integer number", () => {
       expect(codeToNumber([0, 0, 0, 0])).toEqual(0);
