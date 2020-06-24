@@ -1,7 +1,30 @@
+import { Match, score } from "./codeMaker";
+
 export type Code = [number, number, number, number];
 
-export const breakCode = (pastGuesses: Code[]): Code => {
-  return [0, 0, 0, 0];
+export interface ScoredGuess {
+  guess: Code;
+  score: Match;
+}
+
+export const breakCode = (
+  lastGuess: Code | null,
+  pastGuesses: ScoredGuess[]
+): Code => {
+  if (!lastGuess) return [0, 0, 0, 0];
+  return findNextGuess(incrementCode(lastGuess), pastGuesses);
+};
+
+const findNextGuess = (guess: Code, pastGuesses: ScoredGuess[]): Code => {
+  const guessScore = score(guess, pastGuesses[0].guess);
+
+  if (sameScore(guessScore, pastGuesses[0].score)) return guess;
+
+  return findNextGuess(incrementCode(guess), pastGuesses);
+};
+
+const sameScore = (score1: Match, score2: Match): boolean => {
+  return score1.pos == score2.pos && score1.val == score2.val;
 };
 
 export const codeToNumber = (code: Code): number => {
