@@ -1,10 +1,10 @@
-import { Match, score } from "./codeMaker";
+import { Score, score } from "./codeMaker";
 
 export type Code = [number, number, number, number];
 
 export interface ScoredGuess {
   guess: Code;
-  score: Match;
+  score: Score;
 }
 
 export const breakCode = (
@@ -16,22 +16,22 @@ export const breakCode = (
 };
 
 const findNextGuess = (guess: Code, pastGuesses: ScoredGuess[]): Code => {
-  if (sameCode(guess, [0, 0, 0, 0]))
-    throw new Error("Error finding next guess");
+  if (equals(guess, [0, 0, 0, 0])) throw new Error("Error finding next guess");
 
-  const guessScore = score(guess, pastGuesses[0].guess);
-
-  if (sameScore(guessScore, pastGuesses[0].score)) return guess;
+  if (isSameScore(guess, pastGuesses[0].guess, pastGuesses[0].score))
+    return guess;
 
   return findNextGuess(incrementCode(guess), pastGuesses);
 };
 
-const sameCode = (code1: Code, code2: Code): boolean => {
-  return JSON.stringify(code1) === JSON.stringify(code2);
+const equals = (a: Code | Score, b: Code | Score): boolean => {
+  return JSON.stringify(a) === JSON.stringify(b);
 };
 
-const sameScore = (score1: Match, score2: Match): boolean => {
-  return score1.pos == score2.pos && score1.val == score2.val;
+const isSameScore = (code: Code, guess: Code, expected: Score): boolean => {
+  const codeScore = score(code, guess);
+
+  return equals(codeScore, expected);
 };
 
 export const codeToNumber = (code: Code): number => {

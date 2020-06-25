@@ -1,11 +1,11 @@
 import { Code } from "./codeBreaker";
 
-export interface Match {
+export interface Score {
   pos: number; // Digits with the same position and value
   val: number; // Digits with the correct value but different position
 }
 
-export const score = (code: Code, guess: Code): Match => {
+export const score = (code: Code, guess: Code): Score => {
   const pos = positionMatches(code, guess);
   const val = valueMatches(code, guess);
   const over = overCount(code, guess);
