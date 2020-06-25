@@ -1,4 +1,4 @@
-import { Score, score } from "./codeMaker";
+import { Score, score } from './codeMaker';
 
 export type Code = [number, number, number, number];
 
@@ -7,25 +7,24 @@ export interface ScoredGuess {
   score: Score;
 }
 
-export const breakCode = (
-  lastGuess: Code | null,
-  pastGuesses: ScoredGuess[]
-): Code => {
+export const breakCode = (lastGuess: Code | null, pastGuesses: ScoredGuess[]): Code => {
   if (!lastGuess) return [0, 0, 0, 0];
-  return findNextGuess(incrementCode(lastGuess), pastGuesses);
+  return findNextGuess(lastGuess, pastGuesses);
 };
 
-const findNextGuess = (guess: Code, pastGuesses: ScoredGuess[]): Code => {
-  if (equals(guess, [0, 0, 0, 0])) throw new Error("Error finding next guess");
+const findNextGuess = (lastGuess: Code, pastGuesses: ScoredGuess[]): Code => {
+  const guess = incrementCode(lastGuess);
+  if (equals(guess, [0, 0, 0, 0])) throw new Error('Error finding next guess');
 
-  if (isSameScore(guess, pastGuesses[0].guess, pastGuesses[0].score))
-    return guess;
+  if (isValidComparingToPastGuesses(guess, pastGuesses)) return guess;
 
-  return findNextGuess(incrementCode(guess), pastGuesses);
+  return findNextGuess(guess, pastGuesses);
 };
 
-const equals = (a: Code | Score, b: Code | Score): boolean => {
-  return JSON.stringify(a) === JSON.stringify(b);
+const isValidComparingToPastGuesses = (guess: Code, pastGuesses: ScoredGuess[]): boolean => {
+  return pastGuesses.every((scoreGuess: ScoredGuess) => {
+    return isSameScore(guess, scoreGuess.guess, scoreGuess.score);
+  });
 };
 
 const isSameScore = (code: Code, guess: Code, expected: Score): boolean => {
@@ -34,18 +33,17 @@ const isSameScore = (code: Code, guess: Code, expected: Score): boolean => {
   return equals(codeScore, expected);
 };
 
+const equals = (a: Code | Score, b: Code | Score): boolean => {
+  return JSON.stringify(a) === JSON.stringify(b);
+};
+
 export const codeToNumber = (code: Code): number => {
   // return code[0] * 6 * 6 * 6 + code[1] * 6 * 6 + code[2] * 6 + code[3];
   return code.reduce((acc, value) => acc * 6 + value);
 };
 
 export const numberToCode = (number: number): Code => {
-  return [
-    div(number, 6 * 6 * 6) % 6,
-    div(number, 6 * 6) % 6,
-    div(number, 6) % 6,
-    number % 6,
-  ];
+  return [div(number, 6 * 6 * 6) % 6, div(number, 6 * 6) % 6, div(number, 6) % 6, number % 6];
 };
 
 const div = (dividend: number, divisor: number): number => {
