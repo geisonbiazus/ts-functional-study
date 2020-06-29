@@ -1,4 +1,4 @@
-import { Code, breakCode, ScoredGuess, numberToCode } from './codeBreaker';
+import { Code, breakCodeSeq, ScoredGuess, numberToCode } from './codeBreaker';
 import { calculateScore, Score } from './codeMaker';
 
 export const autoPlay = (code: Code = randomCode()): number => {
@@ -10,7 +10,7 @@ export const randomCode = (): Code => {
 };
 
 const tryNextGuess = (tries: number, lastGuess: Code | null, code: Code, pastGuesses: ScoredGuess[]): number => {
-  const guess = breakCode(lastGuess, pastGuesses);
+  const guess = breakCodeSeq(lastGuess, pastGuesses);
   const score = calculateScore(code, guess);
 
   if (isFullScore(score)) return tries;

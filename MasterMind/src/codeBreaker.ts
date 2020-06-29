@@ -7,7 +7,7 @@ export interface ScoredGuess {
   score: Score;
 }
 
-export const breakCode = (lastGuess: Code | null, pastGuesses: ScoredGuess[]): Code => {
+export const breakCodeSeq = (lastGuess: Code | null, pastGuesses: ScoredGuess[]): Code => {
   if (!lastGuess) return [0, 0, 0, 0];
   return findNextGuess(lastGuess, pastGuesses);
 };

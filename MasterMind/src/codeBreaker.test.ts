@@ -1,35 +1,37 @@
-import { breakCode, codeToNumber, numberToCode, incrementCode, Code, ScoredGuess } from './codeBreaker';
+import { breakCodeSeq, codeToNumber, numberToCode, incrementCode, ScoredGuess } from './codeBreaker';
 
 describe('Code Breaker', () => {
-  it('initial guess', () => {
-    expect(breakCode(null, [])).toEqual([0, 0, 0, 0]);
-  });
+  describe('breakCodeSeq', () => {
+    it('initial guess', () => {
+      expect(breakCodeSeq(null, [])).toEqual([0, 0, 0, 0]);
+    });
 
-  it('first step for code [1, 2, 3, 4]', () => {
-    const pastGuesses: ScoredGuess[] = [{ guess: [0, 0, 0, 0], score: { pos: 0, val: 0 } }];
+    it('first step for code [1, 2, 3, 4]', () => {
+      const pastGuesses: ScoredGuess[] = [{ guess: [0, 0, 0, 0], score: { pos: 0, val: 0 } }];
 
-    expect(breakCode([0, 0, 0, 0], pastGuesses)).toEqual([1, 1, 1, 1]);
-  });
+      expect(breakCodeSeq([0, 0, 0, 0], pastGuesses)).toEqual([1, 1, 1, 1]);
+    });
 
-  it('first step for code [0, 0, 0, 1]', () => {
-    const pastGuesses: ScoredGuess[] = [{ guess: [0, 0, 0, 0], score: { pos: 3, val: 0 } }];
+    it('first step for code [0, 0, 0, 1]', () => {
+      const pastGuesses: ScoredGuess[] = [{ guess: [0, 0, 0, 0], score: { pos: 3, val: 0 } }];
 
-    expect(breakCode([0, 0, 0, 0], pastGuesses)).toEqual([0, 0, 0, 1]);
-  });
+      expect(breakCodeSeq([0, 0, 0, 0], pastGuesses)).toEqual([0, 0, 0, 1]);
+    });
 
-  it('second step for code [0, 0, 1, 0]', () => {
-    const pastGuesses: ScoredGuess[] = [{ guess: [0, 0, 0, 1], score: { pos: 2, val: 2 } }];
+    it('second step for code [0, 0, 1, 0]', () => {
+      const pastGuesses: ScoredGuess[] = [{ guess: [0, 0, 0, 1], score: { pos: 2, val: 2 } }];
 
-    expect(breakCode([0, 0, 0, 1], pastGuesses)).toEqual([0, 0, 1, 0]);
-  });
+      expect(breakCodeSeq([0, 0, 0, 1], pastGuesses)).toEqual([0, 0, 1, 0]);
+    });
 
-  it('two steps are required for [0, 0, 1, 0]', () => {
-    const pastGuesses: ScoredGuess[] = [
-      { guess: [0, 0, 0, 0], score: { pos: 3, val: 0 } },
-      { guess: [0, 0, 0, 1], score: { pos: 2, val: 2 } },
-    ];
+    it('two steps are required for [0, 0, 1, 0]', () => {
+      const pastGuesses: ScoredGuess[] = [
+        { guess: [0, 0, 0, 0], score: { pos: 3, val: 0 } },
+        { guess: [0, 0, 0, 1], score: { pos: 2, val: 2 } },
+      ];
 
-    expect(breakCode([0, 0, 0, 0], pastGuesses)).toEqual([0, 0, 1, 0]);
+      expect(breakCodeSeq([0, 0, 0, 0], pastGuesses)).toEqual([0, 0, 1, 0]);
+    });
   });
 
   describe('codeToNumber', () => {
