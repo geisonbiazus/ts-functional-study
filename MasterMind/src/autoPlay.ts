@@ -1,8 +1,12 @@
-import { Code, breakCode, ScoredGuess } from './codeBreaker';
+import { Code, breakCode, ScoredGuess, numberToCode } from './codeBreaker';
 import { calculateScore, Score } from './codeMaker';
 
-export const autoPlay = (code: Code): number => {
+export const autoPlay = (code: Code = randomCode()): number => {
   return tryNextGuess(1, null, code, []);
+};
+
+export const randomCode = (): Code => {
+  return numberToCode(Math.floor(Math.random() * (6 * 6 * 6 * 6 - 1)));
 };
 
 const tryNextGuess = (tries: number, lastGuess: Code | null, code: Code, pastGuesses: ScoredGuess[]): number => {
