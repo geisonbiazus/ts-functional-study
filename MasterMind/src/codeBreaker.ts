@@ -1,4 +1,4 @@
-import { Score, score } from './codeMaker';
+import { Score, calculateScore } from './codeMaker';
 
 export type Code = [number, number, number, number];
 
@@ -28,7 +28,7 @@ const isValidComparingToPastGuesses = (guess: Code, pastGuesses: ScoredGuess[]):
 };
 
 const isSameScore = (code: Code, guess: Code, expected: Score): boolean => {
-  const codeScore = score(code, guess);
+  const codeScore = calculateScore(code, guess);
 
   return equals(codeScore, expected);
 };

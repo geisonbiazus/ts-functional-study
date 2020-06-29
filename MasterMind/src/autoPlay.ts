@@ -1,11 +1,23 @@
-import { Code, breakCode } from './codeBreaker';
-import { score } from './codeMaker';
+import { Code, breakCode, ScoredGuess } from './codeBreaker';
+import { calculateScore, Score } from './codeMaker';
 
 export const autoPlay = (code: Code): number => {
-  const guess = breakCode(null, []);
-  const guessScore = score(code, guess);
+  return tryNextGuess(1, null, code, []);
+};
 
-  if (guessScore.pos == 4 && guessScore.val == 0) return 1;
+const tryNextGuess = (tries: number, lastGuess: Code | null, code: Code, pastGuesses: ScoredGuess[]): number => {
+  const guess = breakCode(lastGuess, pastGuesses);
+  const score = calculateScore(code, guess);
 
-  return 2;
+  if (isFullScore(score)) return tries;
+
+  return tryNextGuess(++tries, guess, code, appendScoredGuess(pastGuesses, guess, score));
+};
+
+const isFullScore = (score: Score) => {
+  return score.pos == 4 && score.val == 0;
+};
+
+const appendScoredGuess = (scoredGuesses: ScoredGuess[], guess: Code, score: Score) => {
+  return [...scoredGuesses, { guess, score }];
 };
