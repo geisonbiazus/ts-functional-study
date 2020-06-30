@@ -7,6 +7,34 @@ export interface ScoredGuess {
   score: Score;
 }
 
+export const breakCode3x2 = (lastGuess: Code | null, pastGuesses: ScoredGuess[]): Code => {
+  switch (pastGuesses.length) {
+    case 0:
+      return [0, 0, 1, 1];
+    case 1:
+      return [2, 2, 3, 3];
+    case 2:
+      return [4, 4, 5, 5];
+    case 3:
+      return breakCodeSeq([0, 0, 0, 0], pastGuesses);
+  }
+  return breakCodeSeq(lastGuess, pastGuesses);
+};
+
+export const breakCodeDoubleRainbow = (lastGuess: Code | null, pastGuesses: ScoredGuess[]): Code => {
+  switch (pastGuesses.length) {
+    case 0:
+      return [0, 1, 2, 3];
+    case 1:
+      return [2, 3, 4, 5];
+    case 2:
+      return [4, 5, 0, 1];
+    case 3:
+      return breakCodeSeq([0, 0, 0, 0], pastGuesses);
+  }
+  return breakCodeSeq(lastGuess, pastGuesses);
+};
+
 export const breakCodeSeq = (lastGuess: Code | null, pastGuesses: ScoredGuess[]): Code => {
   if (!lastGuess) return [0, 0, 0, 0];
   return findNextGuess(lastGuess, pastGuesses);

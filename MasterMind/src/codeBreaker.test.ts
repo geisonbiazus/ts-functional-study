@@ -1,4 +1,12 @@
-import { breakCodeSeq, codeToNumber, numberToCode, incrementCode, ScoredGuess } from './codeBreaker';
+import {
+  breakCodeSeq,
+  codeToNumber,
+  numberToCode,
+  incrementCode,
+  ScoredGuess,
+  breakCode3x2,
+  breakCodeDoubleRainbow,
+} from './codeBreaker';
 
 describe('Code Breaker', () => {
   describe('breakCodeSeq', () => {
@@ -31,6 +39,82 @@ describe('Code Breaker', () => {
       ];
 
       expect(breakCodeSeq([0, 0, 0, 0], pastGuesses)).toEqual([0, 0, 1, 0]);
+    });
+  });
+
+  describe('breakCode3x2', () => {
+    it('starts with [0, 0, 1, 1] for the first guess', () => {
+      expect(breakCode3x2(null, [])).toEqual([0, 0, 1, 1]);
+    });
+
+    it('guesses [2, 2, 3, 3] for the second guess', () => {
+      const pastGuesses: ScoredGuess[] = [{ guess: [0, 0, 1, 1], score: { pos: 0, val: 0 } }];
+      expect(breakCode3x2([0, 0, 1, 1], pastGuesses)).toEqual([2, 2, 3, 3]);
+    });
+
+    it('guesses [4, 4, 5, 5] for the third guess', () => {
+      const pastGuesses: ScoredGuess[] = [
+        { guess: [0, 0, 1, 1], score: { pos: 0, val: 0 } },
+        { guess: [2, 2, 3, 3], score: { pos: 0, val: 0 } },
+      ];
+      expect(breakCode3x2([2, 2, 3, 3], pastGuesses)).toEqual([4, 4, 5, 5]);
+    });
+
+    it('falls back to sequential after third guess', () => {
+      const pastGuesses: ScoredGuess[] = [
+        { guess: [0, 0, 1, 1], score: { pos: 0, val: 0 } },
+        { guess: [2, 2, 3, 3], score: { pos: 0, val: 0 } },
+        { guess: [4, 4, 5, 5], score: { pos: 0, val: 4 } },
+      ];
+      expect(breakCode3x2([4, 4, 5, 5], pastGuesses)).toEqual([5, 5, 4, 4]);
+    });
+
+    it('keeps using sequential after fourth guess. Code: [5, 4, 5, 4]', () => {
+      const pastGuesses: ScoredGuess[] = [
+        { guess: [0, 0, 1, 1], score: { pos: 0, val: 0 } },
+        { guess: [2, 2, 3, 3], score: { pos: 0, val: 0 } },
+        { guess: [4, 4, 5, 5], score: { pos: 2, val: 2 } },
+        { guess: [4, 5, 4, 5], score: { pos: 0, val: 4 } },
+      ];
+      expect(breakCode3x2([4, 5, 4, 5], pastGuesses)).toEqual([5, 4, 5, 4]);
+    });
+  });
+
+  describe('breakCodeDoubleRainbow', () => {
+    it('starts with [0, 1, 2, 3] for the first guess', () => {
+      expect(breakCodeDoubleRainbow(null, [])).toEqual([0, 1, 2, 3]);
+    });
+
+    it('guesses [2, 3, 4, 5] for the second guess', () => {
+      const pastGuesses: ScoredGuess[] = [{ guess: [0, 1, 2, 3], score: { pos: 0, val: 0 } }];
+      expect(breakCodeDoubleRainbow([0, 1, 2, 3], pastGuesses)).toEqual([2, 3, 4, 5]);
+    });
+
+    it('guesses [4, 5, 0, 1] for the third guess', () => {
+      const pastGuesses: ScoredGuess[] = [
+        { guess: [0, 1, 2, 3], score: { pos: 0, val: 0 } },
+        { guess: [2, 3, 4, 5], score: { pos: 0, val: 0 } },
+      ];
+      expect(breakCodeDoubleRainbow([2, 3, 4, 5], pastGuesses)).toEqual([4, 5, 0, 1]);
+    });
+
+    it('falls back to sequential after third guess', () => {
+      const pastGuesses: ScoredGuess[] = [
+        { guess: [0, 1, 2, 3], score: { pos: 0, val: 4 } },
+        { guess: [2, 3, 4, 5], score: { pos: 0, val: 2 } },
+        { guess: [4, 5, 0, 1], score: { pos: 0, val: 2 } },
+      ];
+      expect(breakCodeDoubleRainbow([4, 5, 0, 1], pastGuesses)).toEqual([1, 0, 3, 2]);
+    });
+
+    it('keeps using sequential after fourth guess', () => {
+      const pastGuesses: ScoredGuess[] = [
+        { guess: [0, 1, 2, 3], score: { pos: 0, val: 4 } },
+        { guess: [2, 3, 4, 5], score: { pos: 0, val: 2 } },
+        { guess: [4, 5, 0, 1], score: { pos: 0, val: 2 } },
+        { guess: [1, 0, 3, 2], score: { pos: 0, val: 4 } },
+      ];
+      expect(breakCodeDoubleRainbow([1, 0, 3, 2], pastGuesses)).toEqual([3, 2, 1, 0]);
     });
   });
 
